@@ -1,0 +1,177 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from time import sleep
+
+class BrowserActionsExecutor:
+    """کلاس اجرای تمامی عملیات مرورگر"""
+    
+    def __init__(self):
+        """ مقداردهی اولیه و راه‌اندازی مرورگر"""
+        print("🚀 راه‌اندازی مرورگر کزوم...")
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        self.driver.maximize_window()
+        print("✅ مرورگر Chrome راه‌اندازی شد")
+    
+    def execute_all_actions(self):
+        """اجرای تمامی عملیات به ترتیب"""
+        print("\n" + "="*60)
+        print("شروع اجرای تمامی عملیات مرورگر")
+        print("="*60)
+        
+        try:
+            self.action_1_open_google_search()
+            self.action_2_print_title()
+            self.action_3_go_to_wikipedia_back()
+            self.action_4_forward_to_wikipedia()
+            self.action_5_refresh_page()
+            self.action_6_open_new_tab()
+            self.action_7_open_new_window()
+            self.action_8_get_current_window_handle()
+            self.action_9_get_all_window_handles()
+            self.action_10_switch_to_main_window()
+            self.action_11_close_current_tab()
+            
+            print("\n" + "="*60)
+            print("✅ تمامی عملیات با موفقیت اجرا شدند")
+            print("="*60)
+            
+        except Exception as e:
+            print(f"\n❌ خطا در اجرای عملیات: {e}")
+            raise
+    
+    def action_1_open_google_search(self):
+        """Part 1: بازکردن گوگل و جستجو"""
+        print("\n1️⃣  عملیات 1: بازکردن گوگل و جستجوی ویکی‌پدیا")
+        self.driver.get("https://www.google.com")
+        
+        search_box = self.driver.find_element(By.NAME, "q")
+        search_box.send_keys("https://wikipedia.org")
+        sleep(2)
+        print("✅ گوگل باز شد و جستجو انجام شد")
+    
+    def action_2_print_title(self):
+        """Part 2: چاپ عنوان صفحه"""
+        print("\n2️⃣  عملیات 2: نمایش عنوان صفحه")
+        title = self.driver.title
+        print(f"📄 عنوان صفحه: {title}")
+        print("🔍 جستجوی ویکی‌پدیا")
+        print("✅ عنوان صفحه نمایش داده شد")
+    
+    def action_3_go_to_wikipedia_back(self):
+        """Part 3: رفتن به ویکی‌پدیا و بازگشت"""
+        print("\n3️⃣  عملیات 3: رفتن به ویکی‌پدیا و بازگشت")
+        self.driver.get("https://www.wikipedia.com")
+        sleep(1)
+        wikipedia_title = self.driver.title
+        print(f"📄 عنوان ویکی‌پدیا: {wikipedia_title}")
+        
+        self.driver.back()
+        sleep(1)
+        print("🔙 بازگشت از ویکی‌پدیا")
+        print("✅ عملیات بازگشت انجام شد")
+    
+    def action_4_forward_to_wikipedia(self):
+        """Part 4: جلو رفتن به ویکی‌پدیا"""
+        print("\n4️⃣  عملیات 4: جلو رفتن به ویکی‌پدیا")
+        self.driver.forward()
+        sleep(1)
+        print("🔜 جلو رفتن به ویکی‌پدیا")
+        print("✅ عملیات جلو رفتن انجام شد")
+    
+    def action_5_refresh_page(self):
+        """Part 5: رفرش صفحه"""
+        print("\n5️⃣  عملیات 5: رفرش صفحه")
+        self.driver.refresh()
+        sleep(1)
+        print("🔄 رفرش صفحه")
+        print("✅ صفحه رفرش شد")
+    
+    def action_6_open_new_tab(self):
+        """Part 6: بازکردن تب جدید"""
+        print("\n6️⃣  عملیات 6: بازکردن تب جدید")
+        self.driver.switch_to.new_window('tab')
+        sleep(1)
+        new_tab_title = self.driver.title
+        print(f"📑 عنوان تب جدید: {new_tab_title}")
+        print("✅ تب جدید باز شد")
+    
+    def action_7_open_new_window(self):
+        """Part 7: بازکردن پنجره جدید"""
+        print("\n7️⃣  عملیات 7: بازکردن پنجره جدید")
+        self.driver.switch_to.new_window("window")
+        self.driver.get('https://mybista.com')
+        sleep(3)
+        mybista_title = self.driver.title
+        print(f"🪟 عنوان پنجره جدید (Mybista): {mybista_title}")
+        print("✅ پنجره جدید باز شد")
+    
+    def action_8_get_current_window_handle(self):
+        """Part 8: دریافت هندل پنجره جاری"""
+        print("\n8️⃣  عملیات 8: دریافت هندل پنجره جاری")
+        mybista_window = self.driver.current_window_handle
+        print(f"🔧 هندل پنجره Mybista: {mybista_window}")
+        sleep(2)
+        print("✅ هندل پنجره جاری دریافت شد")
+    
+    def action_9_get_all_window_handles(self):
+        """Part 9: دریافت تمامی هندل‌ها"""
+        print("\n9️⃣  عملیات 9: دریافت تمامی هندل‌ها")
+        all_handles = self.driver.window_handles
+        print(f"📋 تعداد هندل‌ها: {len(all_handles)}")
+        
+        for i, handle in enumerate(all_handles):
+            print(f"   هندل {i+1}: {handle}")
+        
+        print("✅ تمامی هندل‌ها دریافت شدند")
+        return all_handles
+    
+    def action_10_switch_to_main_window(self):
+        """Part 10: سوئیچ به پنجره اصلی"""
+        print("\n🔟  عملیات 10: سوئیچ به پنجره اصلی")
+        all_handles = self.driver.window_handles
+        if len(all_handles) > 0:
+            self.driver.switch_to.window(all_handles[0])
+            sleep(2)
+            print("🔄 سوئیچ به پنجره اصلی")
+            print("✅ به پنجره اصلی بازگشت")
+    
+    def action_11_close_current_tab(self):
+        """Part 11: بستن تب جاری"""
+        print("\n1️⃣1️⃣  عملیات 11: بستن تب جاری")
+        self.driver.close()
+        sleep(1)
+        print("❌ تب جاری بسته شد")
+    
+    def cleanup(self):
+        """تمیزکاری و بستن مرورگر"""
+        print("\n🧹 عملیات تمیزکاری...")
+        try:
+            # بستن تمام تب‌های باقی‌مانده
+            for handle in self.driver.window_handles:
+                try:
+                    self.driver.switch_to.window(handle)
+                    self.driver.close()
+                except:
+                    pass
+            
+            sleep(1)
+            self.driver.quit()
+            print("✅ مرورگر بسته شد")
+            
+        except Exception as e:
+            print(f"⚠️  خطا در تمیزکاری: {e}")
+
+# اجرای اصلی
+if __name__ == "__main__":
+    browser_executor = BrowserActionsExecutor()
+    
+    try:
+        browser_executor.execute_all_actions()
+    except KeyboardInterrupt:
+        print("\n\n⏹️  اجرا توسط کاربر متوقف شد")
+    except Exception as e:
+        print(f"\n❌ خطای غیرمنتظره: {e}")
+    finally:
+        browser_executor.cleanup()
